@@ -1,0 +1,47 @@
+services:
+  # File: documind-enterprise/docker-compose.yml 
+  # Purpose: Orchestrates the Backend API and the Vector Database. We use the official pgvector image based on Postgres 16.
+  
+  # ----------------------------------------------------------------------------
+  # DATABASE SERVICE (PostgreSQL 16 with pgvector extension)
+  # ----------------------------------------------------------------------------
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: documind_db
+    restart: always
+    environment:
+      - POSTGRES_USER=documind_admin
+      - POSTGRES_PASSWORD=secure_password_123
+      - POSTGRES_DB=documind_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U documind_admin -d documind_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # BACKEND API SERVICE (FastAPI)
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: documind_backend
+    restart: always
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    volumes:
+      - ./backend:/app  # Hot-reloading for development
+    env_file:
+      - .env.example
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
