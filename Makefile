@@ -1,13 +1,35 @@
-# Force rebuild backend and start app
-rebuild:
-	docker-compose build --no-cache backend && docker-compose up
+.PHONY: help build up down logs clean shell-backend
 
-# Standard run
-run:
-	docker-compose up
+help:
+	@echo "🚀 DocuMind Enterprise Automation"
+	@echo "================================="
+	@echo "make build   : Rebuild all containers (clean build)"
+	@echo "make up      : Start the system"
+	@echo "make down    : Stop the system"
+	@echo "make logs    : View live logs"
+	@echo "make clean   : Remove containers, networks, and volumes"
 
-# Stop services
-stop:
+# Force rebuild to ensure dependencies (LangChain/PgVector) are fresh
+build:
+	docker-compose build --no-cache
+	docker-compose up -d
+	@echo "✅ Application running at http://localhost:3000"
+
+up:
+	docker-compose up -d
+	@echo "✅ Application running at http://localhost:3000"
+
+down:
 	docker-compose down
 
-.PHONY: rebuild run stop
+logs:
+	docker-compose logs -f
+
+# Nuclear option: wipes database data too
+clean:
+	docker-compose down -v
+	docker system prune -f
+
+# Debugging helper
+shell-backend:
+	docker-compose exec backend /bin/bash
