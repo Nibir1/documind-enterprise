@@ -4,23 +4,14 @@
 """
 Config Module
 -------------
-Loads environment variables and defines application settings using Pydantic.
-Ensures validation of critical configuration (e.g., Database URLs) at startup.
+Loads environment variables and defines application settings.
 """
 
-from typing import List, Union
+from typing import List, Union, Optional
 from pydantic import AnyHttpUrl, PostgresDsn, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    """
-    Application Settings
-    
-    Attributes:
-        PROJECT_NAME: Name of the API.
-        API_V1_STR: Base path for V1 API.
-        POSTGRES_*: Database connection details.
-    """
     PROJECT_NAME: str = "DocuMind Enterprise"
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str
@@ -32,13 +23,13 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_PORT: int = 5432
 
+    # AI Settings
+    OPENAI_API_KEY: str
+    EMBEDDING_MODEL: str = "text-embedding-3-small"
+
     @computed_field
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:
-        """
-        Constructs the Async PostgreSQL connection string.
-        Format: postgresql+asyncpg://user:pass@host:port/db
-        """
         return PostgresDsn.build(
             scheme="postgresql+asyncpg",
             username=self.POSTGRES_USER,
@@ -48,7 +39,6 @@ class Settings(BaseSettings):
             path=self.POSTGRES_DB,
         )
 
-    # Configuration for loading .env file
     model_config = SettingsConfigDict(
         env_file=".env.example", 
         case_sensitive=True,

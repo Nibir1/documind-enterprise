@@ -5,7 +5,6 @@
 Main Application Module
 -----------------------
 Entry point for the FastAPI application.
-Configures Middleware, CORS, and Exception Handlers.
 """
 
 from fastapi import FastAPI
@@ -13,56 +12,52 @@ from contextlib import asynccontextmanager
 from sqlalchemy import text
 from app.core.config import settings
 from app.core.database import engine, AsyncSessionLocal
+from app.models.base import Base
+# IMPORTANT: Import models so Base.metadata knows they exist
+from app.models.document import DocumentChunk 
+from app.api.v1.endpoints import documents, chat
 
-# Lifespan context manager for startup/shutdown events
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Application Lifespan Context.
-    
-    1. Startup: Checks database connectivity and ensures 'vector' extension exists.
-    2. Shutdown: Disposes of the database engine.
-    """
-    # --- Startup Logic ---
+    # --- Startup ---
     print(f"INFO:    Starting {settings.PROJECT_NAME}...")
     
+    # 1. FIRST: Enable Vector Extension
+    # We must do this before creating tables, otherwise the 'vector' type won't exist.
     async with AsyncSessionLocal() as session:
         try:
-            # Ensure the pgvector extension is enabled
             await session.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
             await session.commit()
             print("INFO:    Database connection established & Vector extension verified.")
         except Exception as e:
             print(f"ERROR:   Database connection failed: {e}")
             raise e
+
+    # 2. SECOND: Create Database Tables
+    # Now that 'vector' exists, we can create the table safely.
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
             
     yield
     
-    # --- Shutdown Logic ---
+    # --- Shutdown ---
     print("INFO:    Shutting down...")
     await engine.dispose()
 
-# Initialize FastAPI app
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     lifespan=lifespan
 )
 
+# Register Routers
+app.include_router(documents.router, prefix=f"{settings.API_V1_STR}/documents", tags=["Documents"])
+app.include_router(chat.router, prefix=f"{settings.API_V1_STR}/chat", tags=["Chat"])
+
 @app.get("/health")
 async def health_check():
-    """
-    K8s/Docker Liveness Probe.
-    Returns 200 OK if the app is running.
-    """
     return {"status": "healthy", "version": "0.1.0"}
 
 @app.get("/")
 async def root():
-    """
-    Root endpoint for quick verification.
-    """
-    return {
-        "message": f"Welcome to {settings.PROJECT_NAME} API", 
-        "docs": "/docs"
-    }
+    return {"message": "Welcome to DocuMind API", "docs": "/docs"}
