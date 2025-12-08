@@ -8,7 +8,7 @@ strict document search.
 
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue?style=for-the-badge&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688?style=for-the-badge&logo=fastapi&logoColor=white)
 ![LangChain](https://img.shields.io/badge/LangGraph-Agentic-orange?style=for-the-badge)
 
 **DocuMind-Enterprise** is a production-grade **Reference Architecture** for building secure, compliant Retrieval-Augmented Generation (RAG) systems.
