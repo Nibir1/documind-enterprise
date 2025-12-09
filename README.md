@@ -1,4 +1,4 @@
-# DocuMind Enterprise 🚀
+# DocuMind Enterprise
 
 **DocuMind** is a production-grade, containerized **RAG
 (Retrieval-Augmented Generation)** Knowledge Management System. It
@@ -10,17 +10,18 @@ strict document search.
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688?style=for-the-badge&logo=fastapi&logoColor=white)
 ![LangChain](https://img.shields.io/badge/LangGraph-Agentic-orange?style=for-the-badge)
+![Tests](https://img.shields.io/badge/Tests-Passing-green?style=for-the-badge)
 
 **DocuMind-Enterprise** is a production-grade **Reference Architecture** for building secure, compliant Retrieval-Augmented Generation (RAG) systems.
 
-### 🎯 Why this exists
+### Why this exists
 Most RAG demos fail in enterprise production because they lack governance and cost control. This project implements a **strict "Citation-First" architecture** designed for regulated industries (Legal, Finance, GDPR-compliant sectors). It enforces:
 
 1.  **Strict Source Attribution:** No answer is generated without a verified PDF page reference (Zero Hallucination Policy).
 2.  **Agentic Routing:** Uses **LangGraph** to intelligently distinguish between "general chitchat" and "database queries," significantly reducing token costs and latency.
 3.  **Asynchronous Ingestion:** Non-blocking FastAPI pipelines for high-throughput document processing.
 
-## 🏗 System Architecture
+## System Architecture
 
 The application is built on a Microservices architecture using Docker
 Compose:
@@ -35,24 +36,24 @@ Compose:
 4.  **AI Core (LangGraph):** A state-machine agent that routes intent
     (Search vs. Chitchat) and enforces citation governance.
 
-## ⚡ Key Features
+## Key Features
 
--   **🤖 Agentic Routing:** Uses LangGraph to classify intent.
--   **⚖️ Strict Governance:** No hallucinations; every answer includes
+-   **Agentic Routing:** Uses LangGraph to classify intent.
+-   **Strict Governance:** No hallucinations; every answer includes
     **Citations**.
--   **📂 Enterprise Ingestion:** Asynchronous pipeline for PDF/TXT
+-   **Enterprise Ingestion:** Asynchronous pipeline for PDF/TXT
     files.
--   **🎨 Modern UX:** Responsive React interface with real-time
+-   **Modern UX:** Responsive React interface with real-time
     feedback.
 
 ## 🛠 Tech Stack
 
--   **Backend:** Python 3.11, FastAPI, SQLAlchemy Async, Alembic
+-   **Backend:** Python 3.11, FastAPI 0.110, SQLAlchemy Async, Alembic
 -   **AI:** LangChain, LangGraph, OpenAI, pgvector
 -   **Frontend:** React 18, TypeScript, Tailwind
 -   **Infra:** Docker Compose, Nginx
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -74,7 +75,7 @@ make build
 -   Frontend: http://localhost:3000
 -   API Docs: http://localhost:8000/docs
 
-## 🧠 How It Works
+## How It Works
 
 ### Ingestion
 
