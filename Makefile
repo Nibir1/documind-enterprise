@@ -1,4 +1,4 @@
-.PHONY: help build up down logs clean shell-backend
+.PHONY: help build up down logs clean shell-backend test
 
 help:
 	@echo "🚀 DocuMind Enterprise Automation"
@@ -33,3 +33,7 @@ clean:
 # Debugging helper
 shell-backend:
 	docker-compose exec backend /bin/bash
+
+# Run tests inside the running docker container
+test:
+	docker-compose exec backend python -m pytest tests/test_api.py -v
