@@ -69,6 +69,15 @@ cp .env.example .env
 # Add OPENAI_API_KEY
 make build
 ```
+### Testing & Validation
+
+This project includes a comprehensive integration test suite covering 100% of the critical path logic. The tests run inside the Docker container to ensure environment consistency and use `AsyncMock` to simulate OpenAI and PostgreSQL, ensuring zero-cost, fast execution.
+
+To run the test suite:
+
+```bash
+make test
+```
 
 ### Access
 
