@@ -46,7 +46,7 @@ Compose:
 -   **Modern UX:** Responsive React interface with real-time
     feedback.
 
-## 🛠 Tech Stack
+## Tech Stack
 
 -   **Backend:** Python 3.11, FastAPI 0.110, SQLAlchemy Async, Alembic
 -   **AI:** LangChain, LangGraph, OpenAI, pgvector
