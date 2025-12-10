@@ -1,5 +1,9 @@
 # DocuMind Enterprise
 
+[![DocuMind Demo](https://img.youtube.com/vi/PkIsMVDxh-Q/maxresdefault.jpg)](https://youtu.be/PkIsMVDxh-Q)
+
+> 📺 **[Watch the full end-to-end demo](https://youtu.be/PkIsMVDxh-Q)** featuring Asynchronous PDF ingestion, LangGraph agentic routing, and 100% test coverage validation.
+
 **DocuMind** is a production-grade, containerized **RAG
 (Retrieval-Augmented Generation)** Knowledge Management System. It
 mimics a secure Azure Enterprise setup, featuring an agentic core that
